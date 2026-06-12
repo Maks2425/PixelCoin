@@ -1,0 +1,352 @@
+{% from "partials/icons.html" import logo, coin, security_icon, savings_icon, transfer_icon, currency_icon, bank_building, city_skyline, card_illustration, savings_illustration, token_illustration, transfers_illustration %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelCoin — Next-Generation Crypto Banking</title>
+  <meta name="description" content="Secure crypto accounts, instant transfers, high-yield savings, and global payments.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#home" class="logo">
+        {{ logo("36") }}
+        <span class="logo-text">Pixel<span class="logo-gold">Coin</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#products">Cards</a>
+        <a href="#features">Savings</a>
+        <a href="#features">About</a>
+        <a href="#footer">Support</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-secondary">Sign In</button>
+        <button type="button" class="btn-gold">Open Account</button>
+      </div>
+
+      <button type="button" id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="#home">Home</a>
+      <a href="#products">Products</a>
+      <a href="#products">Cards</a>
+      <a href="#features">Savings</a>
+      <a href="#features">About</a>
+      <a href="#footer">Support</a>
+      <div class="mobile-menu-actions">
+        <button type="button" class="btn-secondary" style="width:100%">Sign In</button>
+        <button type="button" class="btn-gold" style="width:100%">Open Account</button>
+      </div>
+    </div>
+    <div class="navbar-line"></div>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <section id="home" class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-orb-purple"></div>
+      <div class="hero-orb-gold"></div>
+      <div class="hero-grid pixel-grid"></div>
+
+      <div class="container hero-inner">
+        <div>
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            TRUSTED BY 2M+ CRYPTO USERS
+          </div>
+
+          <h1 class="hero-title">
+            NEXT-GENERATION<br>
+            <span class="text-gradient-purple">CRYPTO BANKING</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            Secure crypto accounts, instant transfers, high-yield savings, and global payments.
+          </p>
+
+          <div class="hero-cta">
+            <button type="button" class="btn-gold btn-gold-lg">Open Account</button>
+            <button type="button" class="btn-secondary btn-secondary-lg">Learn More</button>
+          </div>
+
+          <div class="hero-stats">
+            <div>
+              <p class="hero-stat-value">$4.2B</p>
+              <p class="hero-stat-label">Assets Secured</p>
+            </div>
+            <div>
+              <p class="hero-stat-value">150+</p>
+              <p class="hero-stat-label">Countries</p>
+            </div>
+            <div>
+              <p class="hero-stat-value">8.5%</p>
+              <p class="hero-stat-label">Max APY</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-visual-glow"></div>
+
+          <div class="hero-skyline">{{ city_skyline() }}</div>
+
+          <div class="hero-building">{{ bank_building() }}</div>
+
+          <div class="hero-coin">
+            <div class="hero-coin-glow"></div>
+            {{ coin("96") }}
+          </div>
+
+          <div class="dashboard-card glass-card dc-balance">
+            <p class="dashboard-card-label">Total Balance</p>
+            <p class="dashboard-card-value">$128,450</p>
+            <p class="dashboard-card-change text-green">+12.4%</p>
+          </div>
+
+          <div class="dashboard-card glass-card dc-apy">
+            <p class="dashboard-card-label">Savings APY</p>
+            <p class="dashboard-card-value">8.5%</p>
+            <p class="dashboard-card-change text-green">Up to 12%</p>
+          </div>
+
+          <div class="dashboard-card glass-card dc-growth">
+            <p class="dashboard-card-label">Portfolio Growth</p>
+            <p class="dashboard-card-value">+24.7%</p>
+            <p class="dashboard-card-change text-green">This month</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-fade"></div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+      <div class="features-glow"></div>
+      <div class="pixel-grid" style="position:absolute;inset:0;opacity:0.3;pointer-events:none;"></div>
+
+      <div class="container">
+        <div class="features-header reveal">
+          <p class="section-label" style="color:#a855f7;">Why PixelCoin</p>
+          <h2 class="section-heading" style="margin-top:1rem;">
+            Built for the <span class="text-gradient-gold">Digital Economy</span>
+          </h2>
+          <p class="section-desc">
+            Everything you need to manage, grow, and spend your crypto — all in one premium platform.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card glass-card glass-card-hover reveal">
+            <div class="feature-card-gradient" style="background:linear-gradient(to bottom,rgba(139,92,246,0.2),transparent);"></div>
+            <div class="feature-icon-wrap">{{ security_icon() }}</div>
+            <h3 class="feature-title">Security</h3>
+            <p class="feature-desc">Bank-grade encryption, multi-signature wallets, and real-time fraud monitoring keep your assets protected 24/7.</p>
+          </div>
+
+          <div class="feature-card glass-card glass-card-hover reveal">
+            <div class="feature-card-gradient" style="background:linear-gradient(to bottom,rgba(245,158,11,0.2),transparent);"></div>
+            <div class="feature-icon-wrap">{{ savings_icon() }}</div>
+            <h3 class="feature-title">High Yield Savings</h3>
+            <p class="feature-desc">Earn up to 8.5% APY on your crypto holdings with flexible terms and daily compounding rewards.</p>
+          </div>
+
+          <div class="feature-card glass-card glass-card-hover reveal">
+            <div class="feature-card-gradient" style="background:linear-gradient(to bottom,rgba(168,85,247,0.2),transparent);"></div>
+            <div class="feature-icon-wrap">{{ transfer_icon() }}</div>
+            <h3 class="feature-title">Instant Transfers</h3>
+            <p class="feature-desc">Send and receive crypto globally in seconds with zero hidden fees and real-time settlement.</p>
+          </div>
+
+          <div class="feature-card glass-card glass-card-hover reveal">
+            <div class="feature-card-gradient" style="background:linear-gradient(to bottom,rgba(251,191,36,0.2),transparent);"></div>
+            <div class="feature-icon-wrap">{{ currency_icon() }}</div>
+            <h3 class="feature-title">Multi-Currency Support</h3>
+            <p class="feature-desc">Hold, swap, and spend 50+ cryptocurrencies and fiat currencies from a single unified account.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="products">
+      <div class="container">
+        <div class="products-header reveal">
+          <p class="section-label" style="color:#fbbf24;">Our Products</p>
+          <h2 class="section-heading" style="margin-top:1rem;">
+            Everything You Need to <span class="text-gradient-purple">Thrive</span>
+          </h2>
+          <p class="section-desc">
+            A complete suite of crypto banking products designed for modern investors and everyday users.
+          </p>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card glass-card glass-card-hover reveal">
+            <div class="product-inner">
+              <div class="product-content">
+                <h3 class="product-title">PixelCoin Card</h3>
+                <p class="product-desc">Spend crypto anywhere with our premium metal card. Earn 2% cashback in PXL on every purchase.</p>
+                <button type="button" class="product-cta product-cta-purple">Get Your Card →</button>
+              </div>
+              <div class="product-visual">
+                <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(168,85,247,0.1),transparent);"></div>
+                {{ card_illustration() }}
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card glass-card glass-card-hover reveal">
+            <div class="product-inner">
+              <div class="product-content">
+                <h3 class="product-title">Crypto Savings</h3>
+                <p class="product-desc">Grow your wealth with flexible and fixed-term savings accounts offering industry-leading APY rates.</p>
+                <button type="button" class="product-cta product-cta-gold">Start Saving →</button>
+              </div>
+              <div class="product-visual">
+                <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(245,158,11,0.1),transparent);"></div>
+                {{ savings_illustration() }}
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card glass-card glass-card-hover reveal">
+            <div class="product-inner">
+              <div class="product-content">
+                <h3 class="product-title">PXL Token</h3>
+                <p class="product-desc">The native utility token powering the PixelCoin ecosystem. Stake PXL for rewards and governance.</p>
+                <button type="button" class="product-cta product-cta-gold">Explore PXL →</button>
+              </div>
+              <div class="product-visual">
+                <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(245,158,11,0.1),transparent);"></div>
+                {{ token_illustration() }}
+              </div>
+            </div>
+          </div>
+
+          <div class="product-card glass-card glass-card-hover reveal">
+            <div class="product-inner">
+              <div class="product-content">
+                <h3 class="product-title">Global Transfers</h3>
+                <p class="product-desc">Send money to 150+ countries instantly. Low fees, real-time tracking, and multi-currency support.</p>
+                <button type="button" class="product-cta product-cta-purple">Send Now →</button>
+              </div>
+              <div class="product-visual">
+                <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(168,85,247,0.1),transparent);"></div>
+                {{ transfers_illustration() }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="logo">
+              {{ logo("32") }}
+              <span class="logo-text">Pixel<span class="logo-gold">Coin</span></span>
+            </div>
+            <p>Next-generation crypto banking for the digital economy. Secure, fast, and built for everyone.</p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Products</h4>
+            <ul>
+              <li><a href="#">PixelCoin Card</a></li>
+              <li><a href="#">Crypto Savings</a></li>
+              <li><a href="#">PXL Token</a></li>
+              <li><a href="#">Global Transfers</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+              <li><a href="#">Licenses</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Status</a></li>
+              <li><a href="#">API Docs</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 PixelCoin. All rights reserved.</p>
+          <p>PixelCoin is a registered trademark. Not financial advice.</p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Crypto Ticker -->
+  <div class="ticker">
+    <div class="ticker-track-wrap">
+      <div class="ticker-fade-left"></div>
+      <div class="ticker-fade-right"></div>
+      <div class="ticker-track">
+        {% set coins = [
+          ("BTC", "Bitcoin", "$97,842.50", "+2.34%", true),
+          ("ETH", "Ethereum", "$3,421.18", "+1.87%", true),
+          ("SOL", "Solana", "$198.64", "-0.42%", false),
+          ("USDC", "USD Coin", "$1.00", "+0.01%", true),
+          ("PXL", "PixelCoin", "$4.28", "+8.92%", true),
+        ] %}
+        {% for _ in range(2) %}
+          {% for symbol, name, price, change, up in coins %}
+          <div class="ticker-item">
+            <span class="ticker-symbol">{{ symbol }}</span>
+            <span class="ticker-name">{{ name }}</span>
+            <span class="ticker-price">{{ price }}</span>
+            <span class="ticker-change {{ 'text-green' if up else 'text-red' }}">{{ change }}</span>
+            <span class="ticker-divider">|</span>
+          </div>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
