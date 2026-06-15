@@ -1,0 +1,42 @@
+{% from "partials/icons.html" import logo %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PixelCoin{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="auth-body">
+  <div class="auth-bg">
+    <div class="hero-glow"></div>
+    <div class="hero-orb-purple"></div>
+    <div class="hero-orb-gold"></div>
+    <div class="pixel-grid" style="position:absolute;inset:0;opacity:0.4;"></div>
+  </div>
+
+  <div class="auth-page">
+    <a href="{{ url_for('index') }}" class="auth-logo">
+      {{ logo("40") }}
+      <span class="logo-text">Pixel<span class="logo-gold">Coin</span></span>
+    </a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% include "partials/flash.html" %}
+    {% endwith %}
+
+    <div class="auth-card glass-card">
+      {% block content %}{% endblock %}
+    </div>
+
+    <p class="auth-footer-link">
+      {% block footer_link %}{% endblock %}
+    </p>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

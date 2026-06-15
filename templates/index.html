@@ -13,47 +13,11 @@
 </head>
 <body>
 
-  <!-- Navigation -->
-  <header class="navbar">
-    <div class="navbar-inner">
-      <a href="#home" class="logo">
-        {{ logo("36") }}
-        <span class="logo-text">Pixel<span class="logo-gold">Coin</span></span>
-      </a>
+  {% include "partials/navbar.html" %}
 
-      <nav class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#products">Products</a>
-        <a href="#products">Cards</a>
-        <a href="#features">Savings</a>
-        <a href="#features">About</a>
-        <a href="#footer">Support</a>
-      </nav>
-
-      <div class="nav-actions">
-        <button type="button" class="btn-secondary">Sign In</button>
-        <button type="button" class="btn-gold">Open Account</button>
-      </div>
-
-      <button type="button" id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-
-    <div id="mobile-menu" class="mobile-menu">
-      <a href="#home">Home</a>
-      <a href="#products">Products</a>
-      <a href="#products">Cards</a>
-      <a href="#features">Savings</a>
-      <a href="#features">About</a>
-      <a href="#footer">Support</a>
-      <div class="mobile-menu-actions">
-        <button type="button" class="btn-secondary" style="width:100%">Sign In</button>
-        <button type="button" class="btn-gold" style="width:100%">Open Account</button>
-      </div>
-    </div>
-    <div class="navbar-line"></div>
-  </header>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% include "partials/flash.html" %}
+  {% endwith %}
 
   <main>
 
@@ -81,8 +45,8 @@
           </p>
 
           <div class="hero-cta">
-            <button type="button" class="btn-gold btn-gold-lg">Open Account</button>
-            <button type="button" class="btn-secondary btn-secondary-lg">Learn More</button>
+            <a href="{{ url_for('register') }}" class="btn-gold btn-gold-lg">Open Account</a>
+            <a href="#features" class="btn-secondary btn-secondary-lg">Learn More</a>
           </div>
 
           <div class="hero-stats">

@@ -1,0 +1,82 @@
+{% from "partials/icons.html" import logo %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — PixelCoin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "partials/navbar.html" %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% include "partials/flash.html" %}
+  {% endwith %}
+
+  <main class="admin-page">
+    <div class="container">
+      <div class="admin-header reveal visible">
+        <p class="section-label" style="color:#fbbf24;">Admin Panel</p>
+        <h1 class="section-heading" style="margin-top:1rem;">
+          User <span class="text-gradient-purple">Management</span>
+        </h1>
+        <p class="section-desc">Manage registered PixelCoin accounts.</p>
+      </div>
+
+      <div class="admin-stats reveal visible">
+        <div class="admin-stat glass-card">
+          <p class="admin-stat-label">Total Users</p>
+          <p class="admin-stat-value">{{ users|length }}</p>
+        </div>
+        <div class="admin-stat glass-card">
+          <p class="admin-stat-label">Admins</p>
+          <p class="admin-stat-value">{{ admin_count }}</p>
+        </div>
+        <div class="admin-stat glass-card">
+          <p class="admin-stat-label">Logged in as</p>
+          <p class="admin-stat-value admin-stat-email">{{ current_user.email }}</p>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap glass-card reveal visible">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Registered</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>#{{ user.id }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                {% if user.is_administrator %}
+                <span class="badge badge-admin">Admin</span>
+                {% else %}
+                <span class="badge badge-user">User</span>
+                {% endif %}
+              </td>
+              <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else '—' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="admin-actions">
+        <a href="{{ url_for('index') }}" class="btn-secondary">← Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
