@@ -32,7 +32,7 @@ def create_app() -> Flask:
 
     @app.context_processor
     def inject_user():
-        return {"current_user": current_user}
+        return {"current_user": current_user, "ADMIN_EMAIL": ADMIN_EMAIL}
 
     with app.app_context():
         db.create_all()
@@ -143,6 +143,38 @@ def register_routes(app: Flask) -> None:
         users = db.session.scalars(select(User).order_by(User.created_at.desc())).all()
         admin_count = sum(1 for u in users if u.is_administrator)
         return render_template("admin.html", users=users, admin_count=admin_count)
+
+    @app.route("/admin/users/<int:user_id>/toggle-admin", methods=["POST"])
+    @admin_required
+    def toggle_admin(user_id: int):
+        user = db.session.get(User, user_id)
+        if user is None:
+            flash("User not found.", "error")
+            return redirect(url_for("admin"))
+
+        if user.id == current_user.id:
+            flash("You cannot change your own admin role.", "error")
+            return redirect(url_for("admin"))
+
+        if user.email.lower() == ADMIN_EMAIL.lower():
+            flash("This account is the primary admin and cannot be changed.", "error")
+            return redirect(url_for("admin"))
+
+        if user.is_admin:
+            admins = db.session.scalars(select(User)).all()
+            admin_count = sum(1 for u in admins if u.is_administrator)
+            if admin_count <= 1:
+                flash("Cannot remove the last admin.", "error")
+                return redirect(url_for("admin"))
+            user.is_admin = False
+            db.session.commit()
+            flash(f"{user.email} is no longer an admin.", "success")
+        else:
+            user.is_admin = True
+            db.session.commit()
+            flash(f"{user.email} is now an admin.", "success")
+
+        return redirect(url_for("admin"))
 
 
 app = create_app()
