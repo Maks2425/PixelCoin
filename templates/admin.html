@@ -49,6 +49,7 @@
               <th>ID</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Card Balance</th>
               <th>Registered</th>
               <th>Actions</th>
             </tr>
@@ -65,21 +66,36 @@
                 <span class="badge badge-user">User</span>
                 {% endif %}
               </td>
+              <td>
+                {% if user.card %}
+                <span class="text-green">${{ "%.2f"|format(user.card.balance) }}</span>
+                <a href="{{ url_for('admin_user_card', user_id=user.id) }}" class="admin-view-card">View Card</a>
+                {% else %}
+                <span class="admin-action-muted">No card</span>
+                {% endif %}
+              </td>
               <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else '—' }}</td>
               <td>
+                <div class="admin-actions-cell">
                 {% if user.id == current_user.id %}
                   <span class="admin-action-muted">You</span>
                 {% elif user.email.lower() == ADMIN_EMAIL.lower() %}
                   <span class="admin-action-muted">Primary admin</span>
-                {% elif user.is_admin %}
+                {% else %}
+                  {% if user.is_admin %}
                   <form method="post" action="{{ url_for('toggle_admin', user_id=user.id) }}">
                     <button type="submit" class="btn-admin btn-admin-remove">Remove Admin</button>
                   </form>
-                {% else %}
+                  {% else %}
                   <form method="post" action="{{ url_for('toggle_admin', user_id=user.id) }}">
                     <button type="submit" class="btn-admin btn-admin-add">Make Admin</button>
                   </form>
+                  {% endif %}
+                  <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('Delete {{ user.email }}? This cannot be undone.');">
+                    <button type="submit" class="btn-admin btn-admin-delete">Delete</button>
+                  </form>
                 {% endif %}
+                </div>
               </td>
             </tr>
             {% endfor %}

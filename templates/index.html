@@ -45,7 +45,9 @@
           </p>
 
           <div class="hero-cta">
+            {% if not current_user.is_authenticated %}
             <a href="{{ url_for('register') }}" class="btn-gold btn-gold-lg">Open Account</a>
+            {% endif %}
             <a href="#features" class="btn-secondary btn-secondary-lg">Learn More</a>
           </div>
 
@@ -167,7 +169,7 @@
               <div class="product-content">
                 <h3 class="product-title">PixelCoin Card</h3>
                 <p class="product-desc">Spend crypto anywhere with our premium metal card. Earn 2% cashback in PXL on every purchase.</p>
-                <button type="button" class="product-cta product-cta-purple">Get Your Card →</button>
+                <a href="{{ url_for('cards') }}" class="product-cta product-cta-purple">Get Your Card →</a>
               </div>
               <div class="product-visual">
                 <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(168,85,247,0.1),transparent);"></div>
@@ -181,7 +183,7 @@
               <div class="product-content">
                 <h3 class="product-title">Crypto Savings</h3>
                 <p class="product-desc">Grow your wealth with flexible and fixed-term savings accounts offering industry-leading APY rates.</p>
-                <button type="button" class="product-cta product-cta-gold">Start Saving →</button>
+                <a href="{{ url_for('savings') }}" class="product-cta product-cta-gold">Start Saving →</a>
               </div>
               <div class="product-visual">
                 <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(245,158,11,0.1),transparent);"></div>
@@ -195,7 +197,7 @@
               <div class="product-content">
                 <h3 class="product-title">PXL Token</h3>
                 <p class="product-desc">The native utility token powering the PixelCoin ecosystem. Stake PXL for rewards and governance.</p>
-                <button type="button" class="product-cta product-cta-gold">Explore PXL →</button>
+                <a href="{{ url_for('pxl') }}" class="product-cta product-cta-gold">Explore PXL →</a>
               </div>
               <div class="product-visual">
                 <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(245,158,11,0.1),transparent);"></div>
@@ -209,7 +211,7 @@
               <div class="product-content">
                 <h3 class="product-title">Global Transfers</h3>
                 <p class="product-desc">Send money to 150+ countries instantly. Low fees, real-time tracking, and multi-currency support.</p>
-                <button type="button" class="product-cta product-cta-purple">Send Now →</button>
+                <a href="{{ url_for('cards') }}#transfer" class="product-cta product-cta-purple">Send Now →</a>
               </div>
               <div class="product-visual">
                 <div class="product-visual-bg" style="background:linear-gradient(to bottom right,rgba(168,85,247,0.1),transparent);"></div>
@@ -236,10 +238,10 @@
           <div class="footer-col">
             <h4>Products</h4>
             <ul>
-              <li><a href="#">PixelCoin Card</a></li>
-              <li><a href="#">Crypto Savings</a></li>
-              <li><a href="#">PXL Token</a></li>
-              <li><a href="#">Global Transfers</a></li>
+              <li><a href="{{ url_for('cards') }}">PixelCoin Card</a></li>
+              <li><a href="{{ url_for('savings') }}">Crypto Savings</a></li>
+              <li><a href="{{ url_for('pxl') }}">PXL Token</a></li>
+              <li><a href="{{ url_for('cards') }}#transfer">Global Transfers</a></li>
             </ul>
           </div>
 

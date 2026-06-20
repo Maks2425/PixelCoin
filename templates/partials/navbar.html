@@ -10,8 +10,8 @@
     <nav class="nav-links">
       <a href="{{ url_for('index') }}#home">Home</a>
       <a href="{{ url_for('index') }}#products">Products</a>
-      <a href="{{ url_for('index') }}#products">Cards</a>
-      <a href="{{ url_for('index') }}#features">Savings</a>
+      <a href="{{ url_for('cards') }}">Cards</a>
+      <a href="{{ url_for('savings') }}">Savings</a>
       <a href="{{ url_for('index') }}#features">About</a>
       <a href="{{ url_for('index') }}#footer">Support</a>
       {% if current_user.is_authenticated and current_user.is_administrator %}
@@ -37,8 +37,8 @@
   <div id="mobile-menu" class="mobile-menu">
     <a href="{{ url_for('index') }}#home">Home</a>
     <a href="{{ url_for('index') }}#products">Products</a>
-    <a href="{{ url_for('index') }}#products">Cards</a>
-    <a href="{{ url_for('index') }}#features">Savings</a>
+    <a href="{{ url_for('cards') }}">Cards</a>
+    <a href="{{ url_for('savings') }}">Savings</a>
     <a href="{{ url_for('index') }}#features">About</a>
     <a href="{{ url_for('index') }}#footer">Support</a>
     {% if current_user.is_authenticated and current_user.is_administrator %}

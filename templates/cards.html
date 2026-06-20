@@ -1,0 +1,137 @@
+{% from "partials/icons.html" import card_illustration %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelCoin Card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "partials/navbar.html" %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% include "partials/flash.html" %}
+  {% endwith %}
+
+  <main class="cards-page">
+    <div class="container">
+      <div class="cards-header reveal visible">
+        <p class="section-label" style="color:#a855f7;">PixelCoin Card</p>
+        <h1 class="section-heading" style="margin-top:1rem;">
+          {% if card %}
+          Your <span class="text-gradient-gold">Wallet</span>
+          {% else %}
+          Open Your <span class="text-gradient-purple">Card</span>
+          {% endif %}
+        </h1>
+      </div>
+
+      {% if not card %}
+      <div class="cards-open-wrap reveal visible">
+        <div class="pxl-card-visual glass-card">
+          {{ card_illustration() }}
+          <p class="pxl-card-hint">Premium metal crypto card with instant global payments.</p>
+          <ul class="pxl-card-perks">
+            <li>$1,000 welcome bonus</li>
+            <li>Instant P2P transfers</li>
+            <li>2% cashback in PXL</li>
+          </ul>
+          <form method="post" action="{{ url_for('open_card') }}">
+            <button type="submit" class="btn-gold btn-gold-lg" style="width:100%;border:none;cursor:pointer;">
+              Open PixelCoin Card
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {% else %}
+      <div class="cards-dashboard reveal visible">
+        <div class="pxl-card-active glass-card">
+          <div class="pxl-card-top">
+            <span class="pxl-card-brand font-pixel">PixelCoin</span>
+            <span class="badge badge-admin">Active</span>
+          </div>
+          <p class="pxl-card-number">{{ card.card_number }}</p>
+          <div class="pxl-card-bottom">
+            <div>
+              <p class="pxl-card-label">Balance</p>
+              <p class="pxl-card-balance">${{ "%.2f"|format(card.balance) }}</p>
+            </div>
+            <div>
+              <p class="pxl-card-label">Holder</p>
+              <p class="pxl-card-email">{{ current_user.email }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cards-transfer glass-card" id="transfer">
+          <h2 class="cards-section-title">Send Money</h2>
+          <p class="cards-section-desc">Transfer funds to another PixelCoin user by email.</p>
+          <form method="post" action="{{ url_for('transfer') }}" class="auth-form">
+            <div class="form-group">
+              <label for="recipient_email">Recipient Email</label>
+              <input type="email" id="recipient_email" name="recipient_email" required placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+              <label for="amount">Amount ($)</label>
+              <input type="number" id="amount" name="amount" required min="0.01" step="0.01" placeholder="0.00">
+            </div>
+            <button type="submit" class="btn-gold auth-submit" style="border:none;cursor:pointer;">Send Transfer</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="cards-history glass-card reveal visible">
+        <h2 class="cards-section-title">Transfer History</h2>
+        {% if transfers %}
+        <div class="history-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Counterparty</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in transfers %}
+              <tr>
+                <td>{{ t.created_at.strftime('%Y-%m-%d %H:%M') if t.created_at else '—' }}</td>
+                <td>
+                  {% if t.sender_id == current_user.id %}
+                  <span class="badge badge-user">Sent</span>
+                  {% else %}
+                  <span class="badge badge-admin">Received</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if t.sender_id == current_user.id %}
+                  {{ t.recipient.email }}
+                  {% else %}
+                  {{ t.sender.email }}
+                  {% endif %}
+                </td>
+                <td class="{{ 'text-red' if t.sender_id == current_user.id else 'text-green' }}">
+                  {% if t.sender_id == current_user.id %}-{% else %}+{% endif %}${{ "%.2f"|format(t.amount) }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="cards-empty">No transfers yet. Send money to get started.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

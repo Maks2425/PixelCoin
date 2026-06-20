@@ -1,0 +1,43 @@
+{% from "partials/icons.html" import token_illustration %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PXL Token — PixelCoin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "partials/navbar.html" %}
+
+  <main class="cards-page">
+    <div class="container">
+      <div class="cards-header reveal visible">
+        <p class="section-label" style="color:#fbbf24;">PXL Token</p>
+        <h1 class="section-heading" style="margin-top:1rem;">
+          The <span class="text-gradient-gold">PixelCoin</span> Ecosystem
+        </h1>
+        <p class="section-desc">Native utility token for rewards, staking, and governance.</p>
+      </div>
+
+      <div class="pxl-card-visual glass-card reveal visible" style="max-width:32rem;margin:0 auto;padding:2rem;text-align:center;">
+        {{ token_illustration() }}
+        <ul class="pxl-card-perks" style="margin-top:1.5rem;">
+          <li>2% cashback on PixelCoin Card purchases</li>
+          <li>Stake PXL for up to 12% APY</li>
+          <li>Vote on platform governance proposals</li>
+          <li>Reduced fees on global transfers</li>
+        </ul>
+        <a href="{{ url_for('cards') }}" class="btn-gold btn-gold-lg" style="display:inline-block;margin-top:1rem;">
+          Get Started with PixelCoin Card
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

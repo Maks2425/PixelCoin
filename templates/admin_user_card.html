@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Card — Admin — PixelCoin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "partials/navbar.html" %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% include "partials/flash.html" %}
+  {% endwith %}
+
+  <main class="admin-page">
+    <div class="container">
+      <div class="admin-header reveal visible">
+        <p class="section-label" style="color:#fbbf24;">Admin — Card Details</p>
+        <h1 class="section-heading" style="margin-top:1rem;font-size:clamp(1rem,2vw,1.5rem);">
+          {{ user.email }}
+        </h1>
+      </div>
+
+      {% if user.card %}
+      <div class="admin-stats reveal visible">
+        <div class="admin-stat glass-card">
+          <p class="admin-stat-label">Card Number</p>
+          <p class="admin-stat-value admin-stat-email">{{ user.card.card_number }}</p>
+        </div>
+        <div class="admin-stat glass-card">
+          <p class="admin-stat-label">Balance</p>
+          <p class="admin-stat-value">${{ "%.2f"|format(user.card.balance) }}</p>
+        </div>
+        <div class="admin-stat glass-card">
+          <p class="admin-stat-label">Opened</p>
+          <p class="admin-stat-value admin-stat-email">
+            {{ user.card.opened_at.strftime('%Y-%m-%d %H:%M') if user.card.opened_at else '—' }}
+          </p>
+        </div>
+      </div>
+      {% else %}
+      <div class="glass-card reveal visible" style="padding:2rem;margin-top:2rem;">
+        <p class="cards-empty">This user has not opened a PixelCoin card yet.</p>
+      </div>
+      {% endif %}
+
+      <div class="admin-table-wrap glass-card reveal visible">
+        <h2 class="cards-section-title" style="padding:1.25rem 1.25rem 0;">Transfer History</h2>
+        {% if transfers %}
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in transfers %}
+            <tr>
+              <td>{{ t.created_at.strftime('%Y-%m-%d %H:%M') if t.created_at else '—' }}</td>
+              <td>{{ t.sender.email }}</td>
+              <td>{{ t.recipient.email }}</td>
+              <td>${{ "%.2f"|format(t.amount) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p class="cards-empty" style="padding:1.25rem;">No transfer history for this user.</p>
+        {% endif %}
+      </div>
+
+      <div class="admin-actions">
+        <a href="{{ url_for('admin') }}" class="btn-secondary">← Back to Admin</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

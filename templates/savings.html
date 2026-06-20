@@ -1,0 +1,163 @@
+{% from "partials/icons.html" import savings_illustration %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Savings — PixelCoin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% include "partials/navbar.html" %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% include "partials/flash.html" %}
+  {% endwith %}
+
+  <main class="cards-page savings-page">
+    <div class="container">
+      <div class="cards-header reveal visible">
+        <p class="section-label" style="color:#fbbf24;">Crypto Savings</p>
+        <h1 class="section-heading" style="margin-top:1rem;">
+          {% if credit %}
+          Your <span class="text-gradient-gold">Credit Line</span>
+          {% else %}
+          Open <span class="text-gradient-purple">Credit</span>
+          {% endif %}
+        </h1>
+      </div>
+
+      {% if credit and credit.balance_used > 0 %}
+      <div class="credit-reminder-banner reveal visible">
+        <strong>Daily Reminder:</strong>
+        You owe <span class="text-gold">${{ "%.2f"|format(credit.balance_used) }}</span> on your credit line.
+        Send a payment from your <a href="{{ url_for('cards') }}">PixelCoin card</a> to avoid fees.
+      </div>
+      {% endif %}
+
+      {% if not credit %}
+      <div class="cards-open-wrap reveal visible">
+        <div class="pxl-card-visual glass-card">
+          {{ savings_illustration() }}
+          <p class="pxl-card-hint">Premium credit line with instant access to funds.</p>
+          <ul class="pxl-card-perks">
+            <li>${{ "{:,.0f}".format(100000) }} initial credit limit</li>
+            <li>Withdraw funds once per month</li>
+            <li>Repay easily from your PixelCoin card</li>
+            <li>Daily payment reminders when balance is due</li>
+          </ul>
+          <form method="post" action="{{ url_for('open_credit') }}">
+            <button type="submit" class="btn-gold btn-gold-lg" style="width:100%;border:none;cursor:pointer;">
+              Open Credit Line
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {% else %}
+      <div class="cards-dashboard reveal visible">
+        <div class="pxl-card-active credit-card-active glass-card">
+          <div class="pxl-card-top">
+            <span class="pxl-card-brand font-pixel">PixelCredit</span>
+            <span class="badge badge-admin">Credit</span>
+          </div>
+          <p class="pxl-card-number">{{ credit.card_number }}</p>
+          <div class="pxl-card-bottom">
+            <div>
+              <p class="pxl-card-label">Available Credit</p>
+              <p class="pxl-card-balance">${{ "%.2f"|format(credit.available_credit) }}</p>
+            </div>
+            <div>
+              <p class="pxl-card-label">Outstanding</p>
+              <p class="pxl-card-balance text-red">${{ "%.2f"|format(credit.balance_used) }}</p>
+            </div>
+          </div>
+          <p class="credit-limit-note">Credit limit: ${{ "%.2f"|format(credit.credit_limit) }}</p>
+        </div>
+
+        <div class="cards-transfer glass-card">
+          <h2 class="cards-section-title">Withdraw Credit</h2>
+          <p class="cards-section-desc">
+            Withdraw funds to your PixelCoin card — available once per month.
+            {% if not can_withdraw and next_withdrawal %}
+            <br><span class="text-gold">Next withdrawal: {{ next_withdrawal.strftime('%Y-%m-%d') }}</span>
+            {% endif %}
+          </p>
+          <form method="post" action="{{ url_for('credit_withdraw') }}" class="auth-form">
+            <div class="form-group">
+              <label for="withdraw_amount">Amount ($)</label>
+              <input type="number" id="withdraw_amount" name="amount" required min="0.01" step="0.01"
+                     max="{{ credit.available_credit }}" placeholder="0.00" {% if not can_withdraw %}disabled{% endif %}>
+            </div>
+            <button type="submit" class="btn-gold auth-submit" style="border:none;cursor:pointer;"
+                    {% if not can_withdraw %}disabled{% endif %}>
+              Withdraw to Card
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {% if credit.balance_used > 0 %}
+      <div class="cards-transfer glass-card reveal visible" style="margin-top:1.5rem;">
+        <h2 class="cards-section-title">Repay Credit</h2>
+        <p class="cards-section-desc">
+          Send money from your PixelCoin card to pay down your credit balance.
+        </p>
+        <form method="post" action="{{ url_for('credit_pay') }}" class="auth-form">
+          <div class="form-group">
+            <label for="pay_amount">Payment Amount ($)</label>
+            <input type="number" id="pay_amount" name="amount" required min="0.01" step="0.01"
+                   max="{{ credit.balance_used }}" placeholder="0.00">
+          </div>
+          <button type="submit" class="btn-secondary auth-submit" style="cursor:pointer;">
+            Pay from Card
+          </button>
+        </form>
+      </div>
+      {% endif %}
+
+      <div class="cards-history glass-card reveal visible">
+        <h2 class="cards-section-title">Credit History</h2>
+        {% if transactions %}
+        <div class="history-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for t in transactions %}
+              <tr>
+                <td>{{ t.created_at.strftime('%Y-%m-%d %H:%M') if t.created_at else '—' }}</td>
+                <td>
+                  {% if t.transaction_type == 'withdraw' %}
+                  <span class="badge badge-admin">Withdrawal</span>
+                  {% else %}
+                  <span class="badge badge-user">Payment</span>
+                  {% endif %}
+                </td>
+                <td class="{{ 'text-green' if t.transaction_type == 'payment' else 'text-red' }}">
+                  {% if t.transaction_type == 'payment' %}-{% else %}+{% endif %}${{ "%.2f"|format(t.amount) }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="cards-empty">No credit activity yet.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
