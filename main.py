@@ -365,7 +365,7 @@ def register_routes(app: Flask) -> None:
             flash("Open your PixelCoin card first to receive credit funds.", "error")
             return redirect(url_for("cards"))
 
-        if not _can_withdraw_credit(credit):
+        if not current_user.is_administrator and not _can_withdraw_credit(credit):
             flash("You can withdraw credit funds once per month. Please wait until next month.", "error")
             return redirect(url_for("savings"))
 
@@ -385,7 +385,8 @@ def register_routes(app: Flask) -> None:
             return redirect(url_for("savings"))
 
         credit.balance_used += amount
-        credit.last_withdrawal_at = datetime.now(timezone.utc)
+        if not current_user.is_administrator:
+            credit.last_withdrawal_at = datetime.now(timezone.utc)
         current_user.card.balance += amount
         db.session.add(CreditTransaction(user_id=current_user.id, amount=amount, transaction_type="withdraw"))
         db.session.commit()
